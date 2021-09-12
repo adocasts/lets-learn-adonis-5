@@ -21,6 +21,19 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async (ctx) => {
-  ctx.test = 'testing';
   return ctx.view.render('welcome')
 })
+
+Route.get('/test', async () => {
+  return 'working'
+})
+
+Route.get('/posts',       () => 'listing posts')
+Route.get('/posts/1',     () => 'get single post')
+Route.post('/posts',      () => 'creating a post')
+Route.put('/posts/1',     () => 'updating a post')
+Route.delete('/posts/1',  () => 'deleting a post')
+
+// Route.any('/posts', () => {})
+
+Route.on('/testing').redirectToPath('https://duckduckgo.com')
