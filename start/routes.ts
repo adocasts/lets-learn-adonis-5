@@ -20,6 +20,15 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.where('id', {
+  match: /^[0-9]+$/,
+  cast: (id) => Number(id)
+})
+
+Route.get('/img/:userId/*', async ({ params }) => {
+  return params
+})
+
 Route.get('/', async (ctx) => {
   return ctx.view.render('welcome')
 })
@@ -28,11 +37,29 @@ Route.get('/test', async () => {
   return 'working'
 })
 
-Route.get('/posts',       () => 'listing posts')
-Route.get('/posts/1',     () => 'get single post')
-Route.post('/posts',      () => 'creating a post')
-Route.put('/posts/1',     () => 'updating a post')
-Route.delete('/posts/1',  () => 'deleting a post')
+Route.get('/posts', async () => {
+  return 'listing posts'
+})
+
+Route.get('/posts/:id', async ({ params }) => {
+  return `get single post with an id of ${typeof params.id}`
+})
+
+Route.post('/posts', async () => {
+  return 'creating a post'
+})
+
+Route.put('/posts/:id', async ({ params }) => {
+  return `updating a post with an id of ${params.id}`
+})
+
+Route.delete('/posts/:id', async (ctx) => {
+  return `deleting a post with an id of ${ctx.params.id}`
+})
+
+Route.get('/posts/topics/:topic?', ({ params }) => {
+  return `topic is ${params.topic}`
+}).where('topic', Route.matchers.slug())
 
 // Route.any('/posts', () => {})
 
