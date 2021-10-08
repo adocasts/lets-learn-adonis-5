@@ -20,8 +20,6 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-import './routes/api/v2/posts'
-
 Route.where('id', {
   match: /^[0-9]+$/,
   cast: (id) => Number(id)
@@ -47,8 +45,8 @@ Route.group(() => {
   }).prefix('/posts').as('posts')
 }).as('app')
 
-
-
 Route.get('/posts/topics/:topic?', ({ params }) => `topic is ${params.topic}`).where('topic', Route.matchers.slug())
 
-Route.on('/testing').redirectToPath('https://duckduckgo.com')
+Route.on('/testing').redirectToPath('https://duckduckgo.com');
+
+require('./routes/api')
