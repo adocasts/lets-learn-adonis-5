@@ -30,9 +30,42 @@ Route.get('/img/:userId/*', async ({ params }) => {
 })
 
 Route.get('/', async (ctx) => {
-  const postsUrl = Route.makeUrl('posts.show', { id: 1 })
-  return postsUrl
+  const postsUrl = Route.makeUrl('app.posts.show', [1], {
+    qs: {
+      test: 'testing-query-string',
+      another: 'testing'      
+    },
+    prefixUrl: 'http://localhost:3333'
+  })
+
+  const postsUrlBuilder = Route.builder()
+    .qs({ test: 'this-is-a-test' })
+    .prefixUrl('/builder')
+    .params({ id: 1 })
+    .make('app.posts.show')
+
+  const postsUrlSigned = Route.makeSignedUrl('/test-signature', {
+    expiresIn: '10s'
+  })
+
+  const postsUrlBuilderSigned = Route.builder()
+    .makeSigned('/test-signature', { expiresIn: '1h' })
+  
+  return { 
+    postsUrl,
+    postsUrlBuilder,
+    postsUrlSigned,
+    postsUrlBuilderSigned
+  }
   return ctx.view.render('welcome')
+})
+
+Route.get('/test-signature', async ({ request, response }) => {
+  if (request.hasValidSignature()) {
+    return 'is valid'
+  }
+
+  return response.redirect().toRoute('app.posts.show', [1], { qs: { test: 'test' } })
 })
 
 Route.group(() => {
