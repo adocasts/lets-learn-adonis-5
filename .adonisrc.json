@@ -21,7 +21,8 @@
     "@adonisjs/core",
     "@adonisjs/session",
     "@adonisjs/view",
-    "@adonisjs/shield"
+    "@adonisjs/shield",
+    "./providers/RouteProvider"
   ],
   "metaFiles": [
     {

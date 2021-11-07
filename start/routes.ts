@@ -60,13 +60,11 @@ Route.get('/', async (ctx) => {
   return ctx.view.render('welcome')
 })
 
-Route.get('/test-signature', async ({ request, response }) => {
-  if (request.hasValidSignature()) {
-    return 'is valid'
-  }
+Route.get('/test-signature', async () => {
+  return 'this is valid'
+}).mustBeSigned()
 
-  return response.redirect().toRoute('app.posts.show', [1], { qs: { test: 'test' } })
-})
+// Route.resource('test', '').mustBeSigned()
 
 Route.group(() => {
   Route.group(() => {
@@ -80,6 +78,8 @@ Route.group(() => {
 
 Route.get('/posts/topics/:topic?', ({ params }) => `topic is ${params.topic}`).where('topic', Route.matchers.slug())
 
-Route.on('/testing').redirectToPath('https://duckduckgo.com');
+Route.on('/testing').goHome()
+
+Route.get('test/:testing', () => 'cool').where('testing', Route.matchers.alphaString())
 
 require('./routes/api')
