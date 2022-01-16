@@ -30,33 +30,33 @@ Route.get('/img/:userId/*', async ({ params }) => {
 })
 
 Route.get('/', async (ctx) => {
-  const postsUrl = Route.makeUrl('app.posts.show', [1], {
-    qs: {
-      test: 'testing-query-string',
-      another: 'testing'      
-    },
-    prefixUrl: 'http://localhost:3333'
-  })
+  // const postsUrl = Route.makeUrl('app.posts.show', [1], {
+  //   qs: {
+  //     test: 'testing-query-string',
+  //     another: 'testing'      
+  //   },
+  //   prefixUrl: 'http://localhost:3333'
+  // })
 
-  const postsUrlBuilder = Route.builder()
-    .qs({ test: 'this-is-a-test' })
-    .prefixUrl('/builder')
-    .params({ id: 1 })
-    .make('app.posts.show')
+  // const postsUrlBuilder = Route.builder()
+  //   .qs({ test: 'this-is-a-test' })
+  //   .prefixUrl('/builder')
+  //   .params({ id: 1 })
+  //   .make('app.posts.show')
 
-  const postsUrlSigned = Route.makeSignedUrl('/test-signature', {
-    expiresIn: '10s'
-  })
+  // const postsUrlSigned = Route.makeSignedUrl('/test-signature', {
+  //   expiresIn: '10s'
+  // })
 
-  const postsUrlBuilderSigned = Route.builder()
-    .makeSigned('/test-signature', { expiresIn: '1h' })
+  // const postsUrlBuilderSigned = Route.builder()
+  //   .makeSigned('/test-signature', { expiresIn: '1h' })
   
-  return { 
-    postsUrl,
-    postsUrlBuilder,
-    postsUrlSigned,
-    postsUrlBuilderSigned
-  }
+  // return { 
+  //   postsUrl,
+  //   postsUrlBuilder,
+  //   postsUrlSigned,
+  //   postsUrlBuilderSigned
+  // }
   return ctx.view.render('welcome')
 })
 
@@ -67,14 +67,19 @@ Route.get('/test-signature', async () => {
 // Route.resource('test', '').mustBeSigned()
 
 Route.group(() => {
-  Route.group(() => {
-    Route.get('/',        async () => 'listing posts').as('index')
-    Route.get('/:id',     async ({ params }) => `get single post with an id of ${typeof params.id}`).as('show')
-    Route.post('/',       async () => 'creating a post').as('store')
-    Route.put('/:id',     async ({ params }) => `updating a post with an id of ${params.id}`).as('update')
-    Route.delete('/:id',  async (ctx) => `deleting a post with an id of ${ctx.params.id}`).as('destroy')
-  }).prefix('/posts').as('posts')
+  Route.resource('posts', 'PostsController')
+  Route.shallowResource('posts.comments', 'CommentsController')
 }).as('app')
+
+Route.group(() => {
+  Route.group(() => {
+    Route.get('/',        'PostsController.index').as('index')
+    Route.get('/:id',     'PostsController.show').as('show')
+    Route.post('/',       'PostsController.store').as('store')
+    Route.put('/:id',     'PostsController.update').as('update')
+    Route.delete('/:id',  'PostsController.destroy').as('destroy')
+  }).prefix('/posts').as('posts')
+}).namespace('App/Admin/Controllers/Http').prefix('admin')
 
 Route.get('/posts/topics/:topic?', ({ params }) => `topic is ${params.topic}`).where('topic', Route.matchers.slug())
 
