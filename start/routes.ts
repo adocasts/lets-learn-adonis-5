@@ -33,7 +33,7 @@ Route.get('/', async (ctx) => {
   // const postsUrl = Route.makeUrl('app.posts.show', [1], {
   //   qs: {
   //     test: 'testing-query-string',
-  //     another: 'testing'      
+  //     another: 'testing'
   //   },
   //   prefixUrl: 'http://localhost:3333'
   // })
@@ -50,8 +50,8 @@ Route.get('/', async (ctx) => {
 
   // const postsUrlBuilderSigned = Route.builder()
   //   .makeSigned('/test-signature', { expiresIn: '1h' })
-  
-  // return { 
+
+  // return {
   //   postsUrl,
   //   postsUrlBuilder,
   //   postsUrlSigned,
