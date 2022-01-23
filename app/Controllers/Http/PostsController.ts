@@ -1,13 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import DateService from 'App/Services/DateService'
-import { DateTime } from 'luxon'
-import { inject } from '@adonisjs/fold'
-import CounterService from '@ioc:Service/CounterService'
 
-@inject()
 export default class PostsController {
-  constructor(public dateService: DateService) {}
-
   public async index ({}: HttpContextContract) {
     return 'listing posts'
   }
@@ -16,12 +9,6 @@ export default class PostsController {
   }
 
   public async store ({}: HttpContextContract) {
-    const dateTime = DateService.toDateTime()
-    const date = this.dateService.toDate(DateTime.now())
-    const count = CounterService.increment()
-
-    console.log({ count })
-
     return 'creating a post'
   }
 
