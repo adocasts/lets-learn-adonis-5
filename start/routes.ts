@@ -19,6 +19,11 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import DateService from 'App/Services/DateService'
+
+Route.get('example', async () => {
+  return DateService.toDate()
+})
 
 Route.where('id', {
   match: /^[0-9]+$/,
