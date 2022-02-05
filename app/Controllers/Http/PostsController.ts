@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import DateService from 'App/Services/DateService'
 import { inject } from '@adonisjs/fold'
+import DiscordLogger from '@ioc:Logger/Discord'
 
 @inject()
 export default class PostsController {
@@ -16,6 +17,8 @@ export default class PostsController {
   public async store ({}: HttpContextContract) {
     const dateTime = DateService.toDateTime()
     const formattedDate = this.dateService.toDate(dateTime)
+
+    await DiscordLogger.info('New Post Created', { dateTime })
 
     return `creating a post ${formattedDate}`
   }

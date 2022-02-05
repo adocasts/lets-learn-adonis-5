@@ -22,4 +22,5 @@ export default Env.rules({
 	CACHE_VIEWS: Env.schema.boolean(),
 	SESSION_DRIVER: Env.schema.string(),
 	NODE_ENV: Env.schema.enum(['development', 'production', 'testing'] as const),
+  DISCORD_WEBHOOK: Env.schema.string()
 })

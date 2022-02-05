@@ -22,7 +22,8 @@
     "@adonisjs/session",
     "@adonisjs/view",
     "@adonisjs/shield",
-    "./providers/RouteProvider"
+    "./providers/RouteProvider",
+    "./providers/LogProvider"
   ],
   "metaFiles": [
     {
