@@ -3,7 +3,8 @@
   "commands": [
     "./commands",
     "@adonisjs/core/build/commands",
-    "@adonisjs/repl/build/commands"
+    "@adonisjs/repl/build/commands",
+    "@adonisjs/lucid/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -23,7 +24,8 @@
     "@adonisjs/view",
     "@adonisjs/shield",
     "./providers/RouteProvider",
-    "./providers/LogProvider"
+    "./providers/LogProvider",
+    "@adonisjs/lucid"
   ],
   "metaFiles": [
     {
