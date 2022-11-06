@@ -19,77 +19,28 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import DateService from 'App/Services/DateService'
-
-Route.get('example', async () => {
-  return DateService.toDate()
-})
-
-Route.where('id', {
-  match: /^[0-9]+$/,
-  cast: (id) => Number(id)
-})
-
-Route.get('/img/:userId/*', async ({ params }) => {
-  return params
-})
 
 Route.get('/', async (ctx) => {
-  // const postsUrl = Route.makeUrl('app.posts.show', [1], {
-  //   qs: {
-  //     test: 'testing-query-string',
-  //     another: 'testing'
-  //   },
-  //   prefixUrl: 'http://localhost:3333'
-  // })
-
-  // const postsUrlBuilder = Route.builder()
-  //   .qs({ test: 'this-is-a-test' })
-  //   .prefixUrl('/builder')
-  //   .params({ id: 1 })
-  //   .make('app.posts.show')
-
-  // const postsUrlSigned = Route.makeSignedUrl('/test-signature', {
-  //   expiresIn: '10s'
-  // })
-
-  // const postsUrlBuilderSigned = Route.builder()
-  //   .makeSigned('/test-signature', { expiresIn: '1h' })
-
-  // return {
-  //   postsUrl,
-  //   postsUrlBuilder,
-  //   postsUrlSigned,
-  //   postsUrlBuilderSigned
-  // }
+  console.log('route handler')
   return ctx.view.render('welcome')
-})
+}).middleware(async (ctx, next) => {
+  console.log('1st middleware before next')
+  await next()
+  console.log('1st middleware after next')
+}).middleware(async (ctx, next) => {
+  console.log('2nd middleware before next')
+  await next()
+  console.log('2nd middleware after next')
+}).middleware(async (ctx, next) => {
+  console.log('3rd middleware before next')
+  await next()
+  console.log('3rd middleware after next')
+}).middleware('authorize:admin,moderator')
 
-Route.get('/test-signature', async () => {
-  return 'this is valid'
-}).mustBeSigned()
-
-// Route.resource('test', '').mustBeSigned()
-
-Route.group(() => {
-  Route.resource('posts', 'PostsController')
-  Route.shallowResource('posts.comments', 'CommentsController')
-}).as('app')
-
-Route.group(() => {
-  Route.group(() => {
-    Route.get('/',        'PostsController.index').as('index')
-    Route.get('/:id',     'PostsController.show').as('show')
-    Route.post('/',       'PostsController.store').as('store')
-    Route.put('/:id',     'PostsController.update').as('update')
-    Route.delete('/:id',  'PostsController.destroy').as('destroy')
-  }).prefix('/posts').as('posts')
-}).namespace('App/Admin/Controllers/Http').prefix('admin')
-
-Route.get('/posts/topics/:topic?', ({ params }) => `topic is ${params.topic}`).where('topic', Route.matchers.slug())
-
-Route.on('/testing').goHome()
-
-Route.get('test/:testing', () => 'cool').where('testing', Route.matchers.alphaString())
-
-require('./routes/api')
+Route.get('/guest', async (ctx) => {
+  return 'guest'
+}).middleware(['authorize', 'authorize:admin', async (ctx, next) => {
+  console.log('3rd middleware before next')
+  await next()
+  console.log('3rd middleware after next')
+}])
