@@ -25,7 +25,8 @@
     "@adonisjs/shield",
     "./providers/RouteProvider",
     "./providers/LogProvider",
-    "@adonisjs/lucid"
+    "@adonisjs/lucid",
+    "@adonisjs/attachment-lite"
   ],
   "metaFiles": [
     {
