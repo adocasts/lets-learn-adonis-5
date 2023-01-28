@@ -20,6 +20,11 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.post('/users/store', 'UsersController.store').as('users.store')
+
+Route.post('/topics/store', 'TopicsController.store').as('topics.store')
+
+
 Route.get('/', async (ctx) => {
   console.log('route handler')
   return ctx.view.render('welcome')
