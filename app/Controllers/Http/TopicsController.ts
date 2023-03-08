@@ -2,6 +2,13 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Topic from 'App/Models/Topic'
 
 export default class TopicsController {
+  public async index({ response }: HttpContextContract) {
+    const topics = await Topic.all()
+    const findMany = await Topic.findMany([6,3])
+    
+    return response.json({ findMany, topics })
+  }
+
   public async store({ request }: HttpContextContract) {
     const data = request.only(['name', 'slug', 'description'])
 
