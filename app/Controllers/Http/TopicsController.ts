@@ -1,12 +1,14 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Topic from 'App/Models/Topic'
+import Route from '@ioc:Adonis/Core/Route';
+import Database from '@ioc:Adonis/Lucid/Database';
 
 export default class TopicsController {
   public async index({ response }: HttpContextContract) {
-    const topics = await Topic.all()
-    const findMany = await Topic.findMany([6,3])
-    
-    return response.json({ findMany, topics })
+    const model = await Topic.query().orderBy('created_at', 'desc')
+    const db = await Database.from('topics').orderBy('created_at', 'desc')
+
+    return response.json({ model, db })
   }
 
   public async store({ request }: HttpContextContract) {
